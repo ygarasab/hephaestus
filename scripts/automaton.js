@@ -4,13 +4,14 @@ class Automaton{
      * Toma as caracterísiticas básicas do autômato e gera seus estados
      * 
      * @param {String[]} estados Lista de estados do autômato
-     * @param {String[]]} alfabeto Lista de símbolos que o autômato processa
+     * @param {String[]} alfabeto Lista de símbolos que o autômato processa
      * @param {String} inicial Estado inicial do autômato
-     * @param {String[]]} finais Estados finais do autômato
-     * @param {String[]]} trans Lista de transições possíveis
+     * @param {String[]} finais Estados finais do autômato
+     * @param {String[]} pilha_stuff Alfabetto aceito pela pilha
+     * @param {String[]} trans Lista de transições possíveis
      */
 
-    constructor(estados, alfabeto, inicial, finais, trans){
+    constructor(estados, alfabeto, inicial, finais, pilha_stuff, trans){
         
 
     }
