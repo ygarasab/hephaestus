@@ -4,8 +4,8 @@
 	<title>Hephaestus</title>
 </head>
 <body>
-	<script type="text/javascript" src="scripts/automaton"></script>
-	<script type="text/javascript" src="scripts/estado"></script>
+	<script type="text/javascript" src="scripts/automaton.js"></script>
+	<script type="text/javascript" src="scripts/estado.js"></script>
 	<script type="text/javascript">
 		
 		function read(e){
@@ -53,6 +53,8 @@
 	          var trans = []
 
 	          for(i of text) trans.push(i.split(', '))
+
+			  console.log(stuff, trans)
 
 	          var automat = new Automaton(stuff[1],stuff[0],stuff[3], stuff[4], stuff[5], trans)
 
