@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <title>Título</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+ 
+  <script type="text/javascript">
+
+var transitions = [
+	["q0", "a", "-", "q0", "B"],
+	["q0", "b", "B", "q1", "-"],
+	["q0", "?", "?", "qf", "-"],
+	["q0", "a", "-", "q2", "C"]
+];
+
+
+class Estado {
+
+ 	constructor(transitions) {
+	
+		let trans;
+	
+		this.trans = new Map();
+	
+		for (trans of transitions) this.trans.set(trans[1], [])
+
+		for (trans of transitions) this.trans.get(trans[1]).push(trans.slice(2))
+
+		/* O mapa possui os símbolos lidos como chave e apresenta as transições para eles, mostrando 
+		* os respectivos símbolo da pilha a ser lido, estado destino e símbolo a ser escrito na pilha. */
+
+		console.log("Transitions:", this.trans) 
+
+	}
+
+	ler (simbolo, pilha){  
+  
+		let aux, add, resultado = []
+
+		if (this.trans.has(simbolo)) // Se o estado processar esse símbolo
+		{ 
+			for (let i=0; i < this.trans.get(simbolo).length; i++) 
+			{
+				aux = pilha 
+
+				add = this.trans.get(simbolo)[i][2] == '-' ? '' : this.trans.get(simbolo)[i][2] 
+			
+				if (aux != '-')  // Se tiver algo na pilha
+				{  
+					// Consumir algo da pilha
+					if (aux[0] == this.trans.get(simbolo)[i][0]) resultado.push([this.trans.get(simbolo)[i][1], add + aux.substr(1)])
+
+					// Não consumir nada da pilha
+					if (this.trans.get(simbolo)[i][0] == '-') resultado.push([this.trans.get(simbolo)[i][1], add + aux])
+
+				} else {
+					// Pilha vazia
+					if (this.trans.get(simbolo)[i][0] == '-') resultado.push([this.trans.get(simbolo)[i][1], add])
+				}
+			}
+		} 
+
+		return resultado
+	        
+	
+		}
+}
+
+var q0 = new Estado(transitions)
+var xx = q0.ler('b', 'BXX')
+console.log(xx)
+
+/* Notas: 
+* - Considera-se o topo da pilha como o primeiro símbolo à esquerda
+* - O resultado tem o formato de um array com outros arrays dentro. Ex.: [["q0", "XB"], ["q2", "C"]]
+* - Quando o estado não consegue realizar o processamento do símbolo, ele só retorna um [].
+* - Falta saber o que fazer quando ele tem um símbolo pra processar mas realiza a transição vazia pra outro estado. Já que o símbolo não 
+*  foi processado, como sinalizar isso? A transição vazia pra um estado tem que aparecer nos processamentos possíveis desse símbolo? 
+*  (Mas como se ele não foi processado?) ~reflexões */
+
+</script>
+</body>
+</html>
