@@ -24,9 +24,18 @@ class Estado {
 		let trans;
 	
 		this.trans = new Map();
+		
+		this.vazios = []
 	
-		for (trans of transitions) this.trans.set(trans[1], [])
-
+		for (trans of transitions) 
+		{
+			this.trans.set(trans[1], [])
+			
+			if (trans[1] == '-') this.vazios.push(trans[3])
+		}
+		
+		console.log("States reached by empty processing: ", this.vazios)
+		
 		for (trans of transitions) this.trans.get(trans[1]).push(trans.slice(2))
 
 		/* O mapa possui os símbolos lidos como chave e apresenta as transições para eles, mostrando 
@@ -66,7 +75,7 @@ class Estado {
 		return resultado
 	        
 	
-		}
+	}
 }
 
 var q0 = new Estado(transitions)
