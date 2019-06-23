@@ -8,11 +8,25 @@ class Automaton{
      * @param {String} inicial Estado inicial do autômato
      * @param {String[]} finais Estados finais do autômato
      * @param {String[]} pilha_stuff Alfabetto aceito pela pilha
-     * @param {String[]} trans Lista de transições possíveis
+     * @param {String[][]} trans Lista de transições possíveis
      */
 
     constructor(estados, alfabeto, inicial, finais, pilha_stuff, trans){
+
+        this.estados = {}
+
+        for(let estado of estados)
         
+            this.estados[estado] = new Estado(trans.filter((trans) => {return trans[0] == estado}))
+        
+        for(let estado of estados)
+
+            this.estados[estado].estados = this.estados
+        
+        this.alfabeto = alfabeto
+        this.inicial = inicial
+        this.finais = finais
+        this.alfabetoPilha = pilha_stuff
 
     }
 
@@ -24,7 +38,33 @@ class Automaton{
 
     ler(palavra){
 
-        return resultado
+        var possibilidades = [ [ this.inicial , [] ] ]
+        var i = 0
+
+        while(true){
+
+            let simbolo = palavra[i]
+            var novasPossibilidades = []
+
+            for(let p of possibilidades){
+
+                let processamento = this.estados[p[0]].ler(simbolo, p[1])
+
+                if(this.finais.includes(processamento[0])) return true
+
+                novasPossibilidades += processamento
+
+            }
+
+            possibilidades = novasPossibilidades
+
+            if(!possibilidades) return false
+
+            i++
+
+            if(i == palavra.length) return false
+
+        }
 
     }
 
