@@ -8,36 +8,55 @@
  
   <script type="text/javascript">
 
-// Colocado para testes, de acordo com o formato do arg que será recebido :)  
-var transitions = [
-	["q0", "a", "-", "q0", "B"],
-	["q0", "b", "B", "q1", "-"],
-	["q0", "?", "?", "qf", "-"],
-	["q0", "a", "-", "q2", "C"]
+// Colocado aleatoriamente para testes, de acordo com o formato do arg que será recebido :)  
+var Q0 = [
+	 ["q0", "a", "A", "q1", "A"],
+	 ["q0", "b", "B", "q2", "B"],
+	 ["q0", "-", "-", "q1", "-"]
 ];
 
+var Q1 = [
+	 ["q1", "-", "-", "q2", "-"],
+	 ["q1", "a", "A", "q2", "-"],
+	 ["q1", "b", "B", "q2", "-"]
+];
+
+var Q2 = [
+	 ["q2", "-", "-", "q3", "-"],
+	 ["q2", "a", "-", "q1", "-"],
+];
+
+var Q3 = [
+	 ["q3", "a", "-", "q4", "B"],
+	 ["q3", "-", "-", "q4", "-"]
+];
+
+var Q4 = [
+	 ["q4", "a", "-", "q4", "C"],
+	 ["q4", "-", "-", "q2", "-"]
+];
 
 class Estado {
-
+	
  	constructor(transitions) {
-	
+		
 		let trans;
-	
+		
 		this.trans = new Map();
 		
 		this.vazios = []
-	
+		
+		this.state = transitions[0][0]
+
 		for (trans of transitions) 
 		{
-			this.trans.set(trans[1], [])
-			
 			if (trans[1] == '-') this.vazios.push(trans[3])
-		}
-		
-		console.log("States reached by empty processing: ", this.vazios)
-		
-		for (trans of transitions) this.trans.get(trans[1]).push(trans.slice(2))
+			
+			this.trans.set(trans[1], [])
+		}		
 
+		for (trans of transitions) this.trans.get(trans[1]).push(trans.slice(2))
+		
 		/* O mapa possui os símbolos lidos como chave e apresenta as transições para eles, mostrando 
 		* os respectivos símbolo da pilha a ser lido, estado destino e símbolo a ser escrito na pilha. */
 
@@ -45,7 +64,30 @@ class Estado {
 
 	}
 
-	ler (simbolo, pilha){  
+	transVazias() { // Função para preencher o atributo 'this.vazios' com os estados atingidos pelo vazio
+
+		let tmp = []
+		
+		while (this.vazios.length > 0)
+		{
+			if (tmp.indexOf(this.vazios[0]) != -1)	this.vazios.shift();
+
+			else
+			{
+				for (let estado of eval(this.vazios[0] + ".vazios")) if (this.vazios.indexOf(estado) == -1)  this.vazios.push(estado)
+					
+				tmp.push(this.vazios[0])
+
+				this.vazios.shift()	
+		
+			}
+		}
+		
+		this.vazios = tmp
+						
+	}
+
+	exec(simbolo, pilha) {  
   
 		let aux, add, resultado = []
 
@@ -54,7 +96,6 @@ class Estado {
 			for (let i=0; i < this.trans.get(simbolo).length; i++) 
 			{
 				aux = pilha 
-
 				add = this.trans.get(simbolo)[i][2] == '-' ? '' : this.trans.get(simbolo)[i][2] 
 			
 				if (aux != '-')  // Se tiver algo na pilha
@@ -74,21 +115,72 @@ class Estado {
 
 		return resultado
 	        
+	}
+
+	ler(simbolo, pilha) {
+
+		let resultados = []
+		let done = []
+		
+		resultados.push.apply(resultados, this.exec(simbolo, pilha))
 	
+		done.push(this.state)
+
+		let aux = this.vazios.slice(0) 
+
+		// Processando no estado atual e nos atingidos pela transição vazia
+		while (aux.length > 0)
+		{
+			if (done.indexOf(aux[0]) != -1)  aux.shift();
+
+			else 
+			{
+				for (let item of eval(aux[0] + ".vazios"))  if (aux.indexOf(item) == -1)  aux.push(item)
+
+				// console.log(aux[0] + ".exec('" + simbolo + "', '" + pilha + "')")
+				
+				resultados.push.apply(resultados, eval(aux[0] + ".exec('" + simbolo + "', '" + pilha + "')"))
+				
+				done.push(aux[0])
+
+				aux.shift()
+			}
+		
+		}
+		
+		resultados = resultados.filter(e => e.length) // Removendo colchetes vazios
+		
+		// Deslocando pelo vazio após processar em um estado 
+		for (let res of resultados.slice(0))  for (let item of eval(res[0] + ".vazios"))  resultados.push([item, res[1]])
+		
+		resultados = Array.from(new Set(resultados.map(JSON.stringify)), JSON.parse) // Removendo itens repetidos
+ 
+		return resultados
 	}
 }
 
-var q0 = new Estado(transitions)
-var xx = q0.ler('b', 'BXX')
-console.log(xx)
+
+var q0 = new Estado(Q0)
+var q1 = new Estado(Q1)
+var q2 = new Estado(Q2)
+var q3 = new Estado(Q3)
+var q4 = new Estado(Q4)
+
+q0.transVazias()
+q1.transVazias()
+q2.transVazias()
+q3.transVazias()
+q4.transVazias()
+
+console.log(q0.ler('a', 'A'))
+console.log(q0.ler('b', 'B'))
 
 /* Notas: 
 * - Considera-se o topo da pilha como o primeiro símbolo à esquerda
 * - O resultado tem o formato de um array com outros arrays dentro. Ex.: [["q0", "XB"], ["q2", "C"]]
 * - Quando o estado não consegue realizar o processamento do símbolo, ele só retorna um [].
-* - Falta saber o que fazer quando ele tem um símbolo pra processar mas realiza a transição vazia pra outro estado. Já que o símbolo não 
-*  foi processado, como sinalizar isso? A transição vazia pra um estado tem que aparecer nos processamentos possíveis desse símbolo? 
-*  (Mas como se ele não foi processado?) ~reflexões */
+* - É necessário chamar o método transVazias() para todos os objetos antes do início do processamento.
+*   Esse método é responsável por fornecer os estados atingíveis pela transição vazia a partir do respectivo estado.
 
 </script>
 </body>
