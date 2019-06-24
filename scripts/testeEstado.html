@@ -42,6 +42,8 @@ class Estado {
 		
 		let trans;
 		
+		this.estados = {}
+		
 		this.trans = new Map();
 		
 		this.vazios = []
@@ -138,8 +140,8 @@ class Estado {
 				for (let item of eval(aux[0] + ".vazios"))  if (aux.indexOf(item) == -1)  aux.push(item)
 
 				// console.log(aux[0] + ".exec('" + simbolo + "', '" + pilha + "')")
-				
-				resultados.push.apply(resultados, eval(aux[0] + ".exec('" + simbolo + "', '" + pilha + "')"))
+				//SUPER ALTERAÇÕES AQUI VVVVVVV
+				resultados.push.apply(resultados, this.estados[aux[0]].exec(simbolo, pilha))
 				
 				done.push(aux[0])
 
