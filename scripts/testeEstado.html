@@ -42,7 +42,7 @@ class Estado {
 		
 		let trans;
 		
-		this.estados = {}
+		this.estados = {} //Objetos a serem recebidos 
 		
 		this.trans = new Map();
 		
@@ -76,7 +76,7 @@ class Estado {
 
 			else
 			{
-				for (let estado of eval(this.vazios[0] + ".vazios")) if (this.vazios.indexOf(estado) == -1)  this.vazios.push(estado)
+				for (let estado of this.estados[this.vazios[0]].vazios) if (this.vazios.indexOf(estado) == -1)  this.vazios.push(estado)
 					
 				tmp.push(this.vazios[0])
 
@@ -86,7 +86,7 @@ class Estado {
 		}
 		
 		this.vazios = tmp
-						
+		
 	}
 
 	exec(simbolo, pilha) {  
@@ -124,7 +124,7 @@ class Estado {
 		let resultados = []
 		let done = []
 		
-		resultados.push.apply(resultados, this.exec(simbolo, pilha))
+		resultados += this.exec(simbolo, pilha)
 	
 		done.push(this.state)
 
@@ -137,11 +137,10 @@ class Estado {
 
 			else 
 			{
-				for (let item of eval(aux[0] + ".vazios"))  if (aux.indexOf(item) == -1)  aux.push(item)
-
+				for (let item of this.estados[aux[0]].vazios)  if (aux.indexOf(item) == -1)  aux.push(item)
 				// console.log(aux[0] + ".exec('" + simbolo + "', '" + pilha + "')")
 				//SUPER ALTERAÇÕES AQUI VVVVVVV
-				resultados.push.apply(resultados, this.estados[aux[0]].exec(simbolo, pilha))
+				resultados += this.estados[aux[0]].exec(simbolo, pilha)
 				
 				done.push(aux[0])
 
@@ -153,7 +152,7 @@ class Estado {
 		resultados = resultados.filter(e => e.length) // Removendo colchetes vazios
 		
 		// Deslocando pelo vazio após processar em um estado 
-		for (let res of resultados.slice(0))  for (let item of eval(res[0] + ".vazios"))  resultados.push([item, res[1]])
+		for (let res of resultados.slice(0))  for (let item of this.estados[res[0]].vazios)  resultados.push([item, res[1]])
 		
 		resultados = Array.from(new Set(resultados.map(JSON.stringify)), JSON.parse) // Removendo itens repetidos
  
