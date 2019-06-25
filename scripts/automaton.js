@@ -17,7 +17,7 @@ class Automaton{
 
         for(let estado of estados)
         
-            this.estados[estado] = new Estado(trans.filter((trans) => {return trans[0] == estado}))
+            this.estados[estado] = new Estado(trans.filter((trans) => {return trans[0] == estado}), estado)
         
         for(let estado of estados)
 
@@ -47,6 +47,9 @@ class Automaton{
             var novasPossibilidades = []
 
             for(let p of possibilidades){
+
+                console.log(this.estados, p[0]);
+                
 
                 let processamento = this.estados[p[0]].ler(simbolo, p[1])
 

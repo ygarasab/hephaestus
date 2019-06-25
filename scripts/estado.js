@@ -1,6 +1,7 @@
 class Estado {
 	
- 	constructor(transitions) {
+ 	constructor(transitions, nome) {
+
 		
 		let trans;
 		
@@ -10,7 +11,7 @@ class Estado {
 		
 		this.vazios = []
 		
-		this.state = transitions[0][0]
+		this.state = nome
         
 		for (trans of transitions) 
 		{
@@ -24,7 +25,7 @@ class Estado {
 		/* O mapa possui os símbolos lidos como chave e apresenta as transições para eles, mostrando 
 		* os respectivos símbolo da pilha a ser lido, estado destino e símbolo a ser escrito na pilha. */
         
-		// console.log("Transitions:", this.trans) 
+		console.log("Transitions:", this.trans) 
 	}
     
 	transVazias() { // Função para preencher o atributo 'this.vazios' com os estados atingidos pelo vazio
@@ -71,6 +72,8 @@ class Estado {
 				}
 			}
 		} 
+
+		
         
 		return resultado
 	        
@@ -82,7 +85,7 @@ class Estado {
         
 		let done = []
 		
-		resultados += this.exec(simbolo, pilha)
+		for(let res of this.exec(simbolo, pilha)) resultados.push(res)
 	
 		done.push(this.state)
         
@@ -96,15 +99,18 @@ class Estado {
 				for (let item of this.estados[aux[0]].vazios)  if (aux.indexOf(item) == -1)  aux.push(item)
                 
 				// console.log(aux[0] + ".exec('" + simbolo + "', '" + pilha + "')")
-				resultados += this.estados[aux[0]].exec(simbolo, pilha)
+				for(let res of this.estados[aux[0]].exec(simbolo, pilha))resultados.push(res)
 				
 				done.push(aux[0])
 				aux.shift()
 			}
 		
 		}
+
 		
-		resultados = resultados.filter(e => e.length) // Removendo colchetes vazios
+		
+		
+		resultados = resultados.filter(e => { return e.length }) // Removendo colchetes vazios
 		
 		// Deslocando pelo vazio após processar em um estado 
 		for (let res of resultados.slice(0))  for (let item of this.estados[res[0]].vazios)  resultados.push([item, res[1]])
