@@ -1,9 +1,17 @@
 class Estado {
+
+	/**
+	 * 
+	 * @param {String[][]} transitions 
+	 * @param {String} nome 
+	 */
 	
  	constructor(transitions, nome) {
 
 		
 		let trans;
+
+		this.pileCheck = false
 		
 		this.estados = {} //Objetos a serem recebidos 
 		
@@ -15,6 +23,8 @@ class Estado {
         
 		for (trans of transitions) 
 		{
+			if(trans.includes('?')) this.pileCheck = true
+
 			if (trans[1] == '-') this.vazios.push(trans[3])
 			
 			this.trans.set(trans[1], [])
@@ -25,7 +35,7 @@ class Estado {
 		/* O mapa possui os símbolos lidos como chave e apresenta as transições para eles, mostrando 
 		* os respectivos símbolo da pilha a ser lido, estado destino e símbolo a ser escrito na pilha. */
         
-		console.log("Transitions:", this.trans) 
+		// console.log("Transitions:", this.trans) 
 	}
     
 	transVazias() { // Função para preencher o atributo 'this.vazios' com os estados atingidos pelo vazio

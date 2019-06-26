@@ -38,24 +38,31 @@ class Automaton{
 
     ler(palavra){
 
-        var possibilidades = [ [ this.inicial , [] ] ]
+        var possibilidades = [ [ this.inicial , '' ] ]
         var i = 0
 
         while(true){
+
+            console.log("Processando a letra", palavra[i]);
+            
+
+            
 
             let simbolo = palavra[i]
             var novasPossibilidades = []
 
             for(let p of possibilidades){
-
-                console.log(this.estados, p[0]);
                 
 
                 let processamento = this.estados[p[0]].ler(simbolo, p[1])
 
-                if(this.finais.includes(processamento[0])) return true
-
-                novasPossibilidades += processamento
+                for(let possibilidade of processamento){
+                    console.log(p[0],simbolo,'=>',possibilidade[0],possibilidade[1]);
+                    
+                    if(!novasPossibilidades.includes(possibilidade)) 
+                        novasPossibilidades.push(possibilidade)
+                    
+                }
 
             }
 
@@ -65,7 +72,19 @@ class Automaton{
 
             i++
 
-            if(i == palavra.length) return false
+            if(i == palavra.length){
+                for(let possibilidade of possibilidades){
+                    
+                    let pileCheck = this.estados[possibilidade[0]].pileCheck
+                    let pile = possibilidade[1]
+                    
+
+                    if(pileCheck && pile == '') return true
+                }
+                    
+                return false
+                
+            }
 
         }
 
