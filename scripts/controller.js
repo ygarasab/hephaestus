@@ -77,7 +77,7 @@ function read(e){
         
         var nome = e.target.value.split('\\')[2].split('.')[0]
 
-        autName.innerHTML = `O auômato ${ nome } foi carregado!`
+        autName.innerHTML = `O autômato ${ nome } foi carregado!`
         
         
 
