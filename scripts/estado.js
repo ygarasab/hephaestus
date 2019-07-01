@@ -1,9 +1,10 @@
 class Estado {
 
 	/**
+	 * Organiza as transições do respectivo estado
 	 * 
-	 * @param {String[][]} transitions 
-	 * @param {String} nome 
+	 * @param {String[][]} transitions Lista de transições do estado
+	 * @param {String} nome Nome do respectivo estado
 	 */
 	
  	constructor(transitions, nome) {
@@ -23,7 +24,7 @@ class Estado {
         
 		for (trans of transitions) 
 		{
-			if(trans.includes('?')) this.pileCheck = true
+			if (trans.includes('?')) this.pileCheck = true
 
 			if (trans[1] == '-') this.vazios.push(trans[3])
 			
@@ -37,6 +38,10 @@ class Estado {
         
 		// console.log("Transitions:", this.trans) 
 	}
+	
+	/**
+	 * Preenche a lista de estados atingíveis pelo vazio a partir do respectivo estado (e de outros também atingidos).
+	 */
     
 	transVazias() { // Função para preencher o atributo 'this.vazios' com os estados atingidos pelo vazio
         
@@ -58,7 +63,15 @@ class Estado {
 		this.vazios = tmp
         
 	}
-    
+	
+    	/**
+	 * Recebe o símbolo a ser lido nesse estado e a pilha atual do autômato, e retorna todos os possíveis estados e pilha pós-processamento.
+	 * 
+	 * @param {String} simbolo Símbolo a ser lido nesse estado
+	 * @param {String} pilha Pilha atual do autômato
+	 * @returns {String[][]} 
+	 */
+	
 	exec(simbolo, pilha) {  
   
 		let aux, add, resultado = []
@@ -82,12 +95,19 @@ class Estado {
 				}
 			}
 		} 
-
-		
         
 		return resultado
 	        
 	}
+	
+	/**
+	 * Recebe o símbolo a ser lido nesse estado e a pilha atual do autômato, faz o processamento + deslocamento vazio e o deslocamento
+	 * vazio + processamento, e retorna todos os possíveis estados e pilha pós-processamento. 
+	 * 
+	 * @param {String} simbolo Símbolo a ser lido nesse estado
+	 * @param {String} pilha Pilha atual do autômato
+	 * @returns {String[][]}
+	 */
     
 	ler(simbolo, pilha) {
         
@@ -109,16 +129,13 @@ class Estado {
 				for (let item of this.estados[aux[0]].vazios)  if (aux.indexOf(item) == -1)  aux.push(item)
                 
 				// console.log(aux[0] + ".exec('" + simbolo + "', '" + pilha + "')")
-				for(let res of this.estados[aux[0]].exec(simbolo, pilha))resultados.push(res)
+				for (let res of this.estados[aux[0]].exec(simbolo, pilha)) resultados.push(res)
 				
 				done.push(aux[0])
 				aux.shift()
 			}
 		
 		}
-
-		
-		
 		
 		resultados = resultados.filter(e => { return e.length }) // Removendo colchetes vazios
 		
