@@ -19,9 +19,12 @@ class Automaton{
         
             this.estados[estado] = new Estado(trans.filter((trans) => {return trans[0] == estado}), estado)
         
-        for(let estado of estados)
+        for(let estado of estados){
 
             this.estados[estado].estados = this.estados
+            this.estados[estado].transVazias()
+        
+        }
         
         this.alfabeto = alfabeto
         this.inicial = inicial
@@ -43,9 +46,20 @@ class Automaton{
 
         while(true){
 
-            console.log("Processando a letra", palavra[i]);
-            
+            if(!palavra.length){
 
+                let estados = [this.inicial].concat(this.estados[this.inicial].vazios)
+                
+                for(let estado of estados)
+                    if(this.estados[estado].pileCheck) return true
+                
+
+                return false
+                
+
+            }
+
+            console.log("Processando a letra", palavra[i]);
             
 
             let simbolo = palavra[i]
