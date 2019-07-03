@@ -4,6 +4,125 @@ var autName = document.getElementById('load')
 var file = document.getElementById('file')
 var log = document.getElementById('log')
 
+var inicial = document.getElementsByClassName('inicial')[0]
+var processContainer = document.getElementsByClassName('processamentos')[0]
+
+
+class DisplayController{
+
+    /**
+     * 
+     * @param {String} estadoInicial 
+     */
+
+    constructor(estadoInicial){
+
+        inicial.innerHTML = ''
+
+        let span = document.createElement('span')
+        span.innerHTML = 'Estado inicial: '
+
+        let estado = document.createElement('span')
+        estado.className = 'estado'
+        estado.innerHTML = estadoInicial
+
+        inicial.appendChild(span)
+        inicial.appendChild(estado)
+
+    }
+
+    /**
+     * 
+     * @param {String} simbolo 
+     * @param {String[][]} processamentos 
+     */
+
+    processa(simbolo, processamentos){
+
+        let processamento = document.createElement('div')
+        processamento.className = 'processamento'
+
+        let identificador = document.createElement('div')
+        identificador.className = 'identificador'
+        identificador.innerHTML = 'Processando o símbolo '+simbolo
+
+        var dProcessamentos = document.createElement('div')
+
+        for(let p of processamentos){
+
+            let dProcessamento = document.createElement('div')
+            dProcessamento.className = 'div-processamento'
+
+            let pilha1 = Array.from(' '+p[1])
+            let pilha2 = Array.from(' '+p[3])
+
+            let dPilha1 = document.createElement('div')
+            dPilha1.className = 'pilha'
+
+            let dPilha2 = document.createElement('div')
+            dPilha2.className = 'pilha'
+
+            for(let s of pilha1){
+
+                let item = document.createElement('span')
+                item.className = 'item-da-pilha'
+                item.innerHTML = s
+
+                dPilha1.appendChild(item)
+            }
+
+            for(let s of pilha2){
+
+                let item = document.createElement('span')
+                item.className = 'item-da-pilha'
+                item.innerHTML = s
+
+                dPilha2.appendChild(item)
+            }
+
+            let estado1 = document.createElement('span')
+            estado1.className = 'estado'
+            estado1.innerHTML = p[0]
+
+            let estado2 = document.createElement('span')
+            estado2.className = 'estado'
+            estado2.innerHTML = p[2]
+
+            let sSimbol = document.createElement('span')
+            sSimbol.className = 'simbolo'
+            sSimbol.innerHTML = ' processando '+simbolo
+
+            let seta = document.createElement('i')
+            seta.className = "fas fa-arrow-right"
+
+
+            dProcessamento.appendChild(dPilha1)
+            dProcessamento.appendChild(estado1)
+            dProcessamento.appendChild(sSimbol)
+            dProcessamento.appendChild(seta)
+            dProcessamento.appendChild(estado2)
+            dProcessamento.appendChild(dPilha2)
+
+            dProcessamentos.appendChild(dProcessamento)
+
+        }
+
+        processamento.appendChild(identificador)
+        processamento.appendChild(dProcessamentos)
+        
+        processContainer.appendChild(processamento)
+
+    }
+
+    clean(){
+
+        processContainer.innerHTML = ''
+
+    }
+
+}
+
+
 
 function check(e){
 

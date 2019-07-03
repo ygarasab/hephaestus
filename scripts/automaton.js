@@ -31,6 +31,8 @@ class Automaton{
         this.finais = finais
         this.alfabetoPilha = pilha_stuff
 
+        this.display = new DisplayController(inicial)
+
     }
 
     /**
@@ -40,6 +42,8 @@ class Automaton{
      */
 
     ler(palavra){
+
+        this.display.clean()
 
         var possibilidades = [ [ this.inicial , '' ] ]
         var i = 0
@@ -64,6 +68,7 @@ class Automaton{
 
             let simbolo = palavra[i]
             var novasPossibilidades = []
+            var processamentosParaDisplay = []
 
             for(let p of possibilidades){
                 
@@ -71,14 +76,18 @@ class Automaton{
                 let processamento = this.estados[p[0]].ler(simbolo, p[1])
 
                 for(let possibilidade of processamento){
-                    console.log(p[0],simbolo,'=>',possibilidade[0],possibilidade[1]);
+                    //console.log(p[0],simbolo,'=>',possibilidade[0],possibilidade[1]);
                     
+                    processamentosParaDisplay.push(p.concat(possibilidade))
+
                     if(!novasPossibilidades.includes(possibilidade)) 
                         novasPossibilidades.push(possibilidade)
                     
                 }
 
             }
+
+            this.display.processa(simbolo, processamentosParaDisplay)
 
             possibilidades = novasPossibilidades
 

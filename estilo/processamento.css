@@ -1,0 +1,61 @@
+.automato{
+    padding: 40px;
+}
+
+.inicial span:not(.estado){
+    margin-left: 30px;
+    font-size: 15pt;
+}
+
+.estado{
+    display: inline-block;
+    color: brown;
+    border: 1px solid brown;
+    height: 25px;
+    width: 25px;
+    border-radius: 15px;
+    padding: 5px 0 0 5px;
+}
+
+.identificador{
+
+    display: block;
+    background-color: brown;
+    color: white;
+    padding: 20px;
+
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+
+}
+
+.div-processamento{
+
+    margin-top: 20px;
+    margin-right: 10px;
+
+}
+
+.pilha{
+
+    box-shadow: 0 0 1px grey;
+    display: inline-block;
+    margin: 0 20px 0 20px;
+
+}
+
+.item-da-pilha{
+
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    border: 1px solid black;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.fa-arrow-right{
+    margin: 0 20px 0 20px;
+}
+
