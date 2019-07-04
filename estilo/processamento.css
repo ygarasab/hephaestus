@@ -1,5 +1,6 @@
 .automato{
-    padding: 40px;
+    padding: 0 40px;
+    margin-bottom: 50px
 }
 
 .inicial span:not(.estado){
@@ -10,10 +11,10 @@
 .estado{
     display: inline-block;
     color: brown;
-    border: 1px solid brown;
+    border: 2px solid brown;
     height: 25px;
     width: 25px;
-    border-radius: 15px;
+    border-radius: 16px;
     padding: 5px 0 0 5px;
 }
 
@@ -59,3 +60,20 @@
     margin: 0 20px 0 20px;
 }
 
+.message{
+    margin-top: 40px;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.success{
+    margin-top: 20px;
+    font-size: 16pt;
+    color: green;
+}
+
+.fail{
+    margin-top: 20px;
+    font-size: 16pt;
+    color: red;
+}

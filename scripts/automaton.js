@@ -55,9 +55,13 @@ class Automaton{
                 let estados = [this.inicial].concat(this.estados[this.inicial].vazios)
                 
                 for(let estado of estados)
-                    if(this.estados[estado].pileCheck) return true
+                    if(this.estados[estado].pileCheck){
+                        
+                        this.display.success(estado)
+                        return true
+                    }
                 
-
+                this.display.fail(0)
                 return false
                 
 
@@ -76,11 +80,14 @@ class Automaton{
                 let processamento = this.estados[p[0]].ler(simbolo, p[1])
 
                 for(let possibilidade of processamento){
-                    //console.log(p[0],simbolo,'=>',possibilidade[0],possibilidade[1]);
+                    console.log(p[0],simbolo,'=>',possibilidade[0],possibilidade[1]);
                     
                     processamentosParaDisplay.push(p.concat(possibilidade))
+                    
 
-                    if(!novasPossibilidades.includes(possibilidade)) 
+                    if(!novasPossibilidades.filter((value) => {
+                        return possibilidade[0] == value[0] && possibilidade[1]==value[1]
+                    }).length) 
                         novasPossibilidades.push(possibilidade)
                     
                 }
@@ -91,7 +98,7 @@ class Automaton{
 
             possibilidades = novasPossibilidades
 
-            if(!possibilidades) return false
+            if(!possibilidades.length) return false
 
             i++
 
@@ -102,9 +109,15 @@ class Automaton{
                     let pile = possibilidade[1]
                     
 
-                    if(pileCheck && pile == '') return true
-                }
+                    if(pileCheck && pile == ''){
+                        
+                        this.display.success(possibilidade[0])
+                        return true
                     
+                    }
+                }
+
+                this.display.fail(0)
                 return false
                 
             }

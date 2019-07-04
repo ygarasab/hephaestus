@@ -18,6 +18,7 @@ class DisplayController{
     constructor(estadoInicial){
 
         inicial.innerHTML = ''
+        processContainer.innerHTML = ''
 
         let span = document.createElement('span')
         span.innerHTML = 'Estado inicial: '
@@ -112,11 +113,50 @@ class DisplayController{
         
         processContainer.appendChild(processamento)
 
+        if(!processamentos.length) this.fail(1)
+
     }
 
     clean(){
 
         processContainer.innerHTML = ''
+
+    }
+
+    success(estado){
+
+        let message = document.createElement('p')
+        message.className = 'message'            
+        message.innerHTML = estado + ' verifica a pilha vazia com sucesso e vai para o estado final'
+
+        let success = document.createElement('p')
+        success.className = 'message success'
+        success.innerHTML = 'Palavra aceita'       
+
+        processContainer.appendChild(message)
+        processContainer.appendChild(success)
+
+
+    }
+
+    fail(flag){
+
+        let fails = [
+            'O processamento terminou mas o autômato não atingiu um estado final',
+            'O processamento não terminou mas não há linhas de processamento possíveis'
+        ]
+
+        let message = document.createElement('p')
+        message.className = 'message'         
+        message.innerHTML = fails[flag]
+
+        let fail = document.createElement('p')
+        fail.className = 'message fail'
+        fail.innerHTML = 'Palavra Recusada'       
+
+        processContainer.appendChild(message)
+        processContainer.appendChild(fail)
+
 
     }
 
@@ -133,7 +173,7 @@ function check(e){
         else{
 
             let leitura = automat.ler(e.target.value) ? 'aceita' : 'recusada'
-            log.innerHTML = `A palavra ${ event.target.value } foi ${leitura}`
+        
             console.log("Sua palavra foi "+leitura);
 
         }
