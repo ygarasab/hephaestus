@@ -18,4 +18,6 @@ q1, ?, ?, qf, -
 Feito isso, basta digitar a palavra a ser processada no campo "Digite sua entrada aqui!" e apertar enter. 
 
 
-O resultado indicará se a palavra foi aceita ou recusada pelo autômato carregado. Caso a palavra tenha sido aceita, todas as linhas de processamento possíveis (incluindo os caminhos incorretos) e as respectivas pilhas serão exibidas. 
+O resultado indicará se a palavra foi aceita ou recusada pelo autômato carregado. Todas as linhas de processamento possíveis (incluindo os caminhos incorretos) e as respectivas pilhas serão exibidas. 
+
+Você pode ter acesso ao Hephaestus [aqui](https://tubskleyson.github.io/hephaestus/). Divirta-se!
