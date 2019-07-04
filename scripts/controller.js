@@ -50,6 +50,7 @@ class DisplayController{
         var dProcessamentos = document.createElement('div')
 
         for(let p of processamentos){
+            
 
             let dProcessamento = document.createElement('div')
             dProcessamento.className = 'div-processamento'
@@ -65,14 +66,15 @@ class DisplayController{
 
             for(let s of pilha1){
 
-                let item = document.createElement('span')
-                item.className = 'item-da-pilha'
-                item.innerHTML = s
+                    let item = document.createElement('span')
+                    item.className = 'item-da-pilha'
+                    item.innerHTML = s
 
-                dPilha1.appendChild(item)
+                    dPilha1.appendChild(item)
             }
 
             for(let s of pilha2){
+                
 
                 let item = document.createElement('span')
                 item.className = 'item-da-pilha'
@@ -227,8 +229,19 @@ function read(e){
         text.shift()
 
         var trans = []
+        
 
-        for(i of text) trans.push(i.split(', '))
+        for(i of text){
+            
+            let k = ''
+            
+            //Corrigindo as quebras de texto
+            for(let char of i) 
+                if(char.charCodeAt(0) != 13) k += char
+            
+            trans.push(k.split(', '))
+        
+        }
 
         console.log(stuff, trans)
 
